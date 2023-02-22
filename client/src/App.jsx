@@ -13,8 +13,6 @@ function App() {
         .then(res => {
           setTodos(res.data);
         });
-
-      console.log(todos)
     } catch (error) {
       console.error(error.message);
     }
@@ -31,7 +29,8 @@ function App() {
       <ul>
         {todos.map((todo) => 
           <Todo 
-            id={todo.todo_id}
+            key={todo.todo_id}
+            todo_id={todo.todo_id}
             description={todo.description}
           />
         )}
