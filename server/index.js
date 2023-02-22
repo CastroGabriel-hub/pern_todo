@@ -34,15 +34,56 @@ app.get('/todos', async(req, res) => {
 
         res.send(getAll.rows);
     } catch (error) {
-        console.log(erros);
+        console.log(error);
     }
 });
 
 //get a Todo
+app.get('/todos/:id', async (req, res) => {
+    try {
+        const {id} = req.params;
+        const todo = await pool.query(
+            'SELECT * FROM todo WHERE todo_id = ($1)',
+            [id]
+        );
+
+        res.send(todo.rows);
+    } catch (error) {
+        console.log(error.message);
+    }
+})
 
 //update a Todo
+app.put('/todos/:id', async (req, res) => {
+    try {
+        const {id} = req.params;
+        const {description} =req.body;
+        const updateTodo = await pool.query(
+            'UPDATE todo SET description = $1 WHERE todo_id = $2',
+            [description, id]
+        );
+
+        res.send('Todo was updated');
+    } catch (error) {
+        console.log(error);
+    }
+});
 
 //delete a Todo
+app.delete('/todos/:id', async (req, res) => {
+    try {
+        const {id} = req.params;
+        const deleteTodo = await pool.query(
+            'DELETE FROM todo WHERE todo_id = $1',
+            [id]
+        );
+
+        res.send('Todo deleted successfully');
+    } catch (error) {
+        console.log(error);
+    }
+});
+
 
 app.listen(port, () => {
     console.log(`Server has started on port ${port}`);
