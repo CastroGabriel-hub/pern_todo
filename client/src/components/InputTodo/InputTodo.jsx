@@ -3,26 +3,25 @@ import axios from 'axios';
 import './InputTodo.scss';
 
 
-function InputTodo() {
+function InputTodo({newTodoListener, setNewTodoListener, reloadListener, setReloadListener}) {
     const [description, setDescription] = useState('');
 
     function handleChange(event){
         setDescription(event.target.value);
     }
 
-    async function submitForm(event){
+    function submitForm(event){
         event.preventDefault();
 
-        try {
-            const body = { description };
-            await axios.post('http://localhost:5050/todos', body)
-                .then((res) => {
-                    console.log(res);
-                });
-            setDescription('');
-        } catch (error) {
-            console.error(error.message);
-        }
+        const body = { description };
+        axios.post('http://localhost:5050/todos', body)
+            .then((res) => {
+                console.log(res.data);
+                setReloadListener(reloadListener + 1);
+            })
+            .catch(error => console.log(error));
+
+        setDescription('');
     }
 
     return (

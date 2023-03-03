@@ -1,17 +1,17 @@
 import axios from 'axios';
 import './Todo.scss';
 
-function Todo({ todo_id, description }) {
+function Todo({ todo_id, description, reloadListener, setReloadListener }) {
 
-    async function deleteTodo(){
-        try {
-            await axios.delete(`http://localhost:5050/todos/${todo_id}`)
-                .then(res => console.log(res));
-        } catch (error) {
-            console.error(error.message);
-        }
+    function deleteTodo(){
+        axios.delete(`http://localhost:5050/todos/${todo_id}`)
+            .then((res) => {
+              console.log(res.data)
+              setReloadListener(reloadListener + 1);
+            })
+            .catch(error => console.log(error));
     }
-
+      
     return (
         <li className='todo' >
             <input type="checkbox" />
