@@ -18,7 +18,6 @@ function App() {
 
   return (
     <div className='app'>
-      <h1>PERN stack Todo List</h1>
       <InputTodo 
         reloadListener={reloadListener} 
         setReloadListener={setReloadListener}
