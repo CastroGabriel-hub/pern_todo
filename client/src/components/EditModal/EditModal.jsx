@@ -8,7 +8,7 @@ function EditModal({todo_id, description, isOpen, setIsOpen, reloadListener, set
 
     useEffect(() => {
         setContent(description);
-    }, [isOpen])
+    }, [isOpen, description])
     
 
     function closeModal(){
