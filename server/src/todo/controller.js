@@ -4,13 +4,13 @@ async function createTodo(req, res){
     try {
         const {description} = req.body;
         const newTodo = await pool.query(
-            'INSERT INTO todo (description) VALUES ($1) RETURNING *', 
+            'INSERT INTO todo (description, is_completed) VALUES ($1, false) RETURNING *', 
             [description]
         );
 
         res.send('Todo added successfully');
     } catch (error) {
-        console.log(error);
+        res.send(error);
     }
 }
 
@@ -22,7 +22,7 @@ async function getAllTodos(req, res){
 
         res.send(getAll.rows);
     } catch (error) {
-        consol.log(error);
+        res.send(error);
     }
 }
 
@@ -45,18 +45,33 @@ async function getTodoById(req, res){
     }
 }
 
-async function updateTodo(req, res){
+async function updateTodoDescription(req, res){
     try {
         const {id} = req.params;
         const {description} = req.body;
-        const updateTodo = await pool.query(
+        const updateTodoDescription = await pool.query(
             'UPDATE todo SET description = $1 WHERE todo_id = $2',
             [description, id]
         );
 
         res.send('Todo was updated successfully');
     } catch (error) {
-        console.log(error);
+        res.send(error);
+    }
+}
+
+async function updateTodoStatus(req, res){
+    try {
+        const {id} = req.params;
+        const {is_completed} = req.body;
+        const updateTodoStatus = await pool.query(
+            'UPDATE todo SET is_completed = $1 WHERE todo_id = $2',
+            [is_completed, id]
+        )
+
+        res.send('Todo Status updated successfully');
+    } catch (error) {
+        res.send(error);
     }
 }
 
@@ -70,7 +85,7 @@ async function deleteTodo(req, res){
 
         res.send('Todo deleted successfully');
     } catch (error) {
-        console.log(error);
+        res.send(error);
     }
 }
 
@@ -78,6 +93,7 @@ module.exports = {
     createTodo,
     getAllTodos,
     getTodoById,
-    updateTodo,
+    updateTodoDescription,
+    updateTodoStatus,
     deleteTodo
 };

@@ -26,7 +26,7 @@ function EditModal({todo_id, description, isOpen, setIsOpen, reloadListener, set
                 closeModal();
                 setReloadListener(reloadListener + 1);
             })
-            .catch(error => console.lof(error));
+            .catch(error => console.log(error));
     }
 
     return (

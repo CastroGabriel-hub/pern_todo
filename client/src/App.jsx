@@ -28,6 +28,7 @@ function App() {
             key={todo.todo_id}
             todo_id={todo.todo_id}
             description={todo.description}
+            is_completed={todo.is_completed}
             reloadListener={reloadListener}
             setReloadListener={setReloadListener}
           />

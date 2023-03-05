@@ -10,6 +10,7 @@
     border-radius: 7px;
     background-color: #fff9f5;
     position: relative;
+    transition: all 0.5s ease;
 
     #checkbox{
         position: absolute;
@@ -59,5 +60,14 @@
         background-color: #FA593D;
         position: absolute;
         right: 10px;
+    }
+}
+
+.finished{
+    opacity: 0.6;
+    
+    p{
+        color: #808080;
+        text-decoration: line-through;
     }
 }
