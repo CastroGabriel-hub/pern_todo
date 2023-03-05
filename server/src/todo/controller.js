@@ -29,7 +29,7 @@ async function getAllTodos(req, res){
 async function getPendingTodos(req, res){
     try {
         const pendingTodos = await pool.query(
-          'SELECT * FROM todo WHERE is_completed = false'  
+          'SELECT * FROM todo WHERE is_completed = false ORDER BY todo_id DESC'  
         );
 
         res.send(pendingTodos.rows);
@@ -41,7 +41,7 @@ async function getPendingTodos(req, res){
 async function getFinishedTodos(req, res){
     try {
         const pendingTodos = await pool.query(
-          'SELECT * FROM todo WHERE is_completed = true'  
+          'SELECT * FROM todo WHERE is_completed = true ORDER BY todo_id DESC'  
         );
 
         res.send(pendingTodos.rows);
