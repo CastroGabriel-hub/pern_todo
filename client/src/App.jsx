@@ -6,15 +6,18 @@ import './App.scss';
 
 function App() {
   const [todos, setTodos] = useState([]);
+  const [list, setList] = useState('pending');
   const [reloadListener, setReloadListener] = useState(0);
 
   useEffect(() => {
-    axios.get('http://localhost:5050/todos')
+    axios.get(`http://localhost:5050/todos/${list}`)
       .then(res => {
         setTodos(res.data);
       })
       .catch(error => console.log(error));
-  }, [reloadListener])
+
+      console.log('useEffect runned');
+  }, [reloadListener, list])
 
   return (
     <div className='app'>
@@ -23,6 +26,10 @@ function App() {
         setReloadListener={setReloadListener}
       />
       <ul>
+        <div className='list-menu'>
+          <p onClick={() => setList('pending')} >Pending Tasks</p>
+          <p onClick={() => setList('finished')} >Finished Tasks</p>
+        </div>
         {todos.map((todo) => 
           <Todo 
             key={todo.todo_id}

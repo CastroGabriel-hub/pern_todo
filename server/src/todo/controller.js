@@ -26,6 +26,30 @@ async function getAllTodos(req, res){
     }
 }
 
+async function getPendingTodos(req, res){
+    try {
+        const pendingTodos = await pool.query(
+          'SELECT * FROM todo WHERE is_completed = false'  
+        );
+
+        res.send(pendingTodos.rows);
+    } catch (error) {
+        res.send(error);
+    }
+}
+
+async function getFinishedTodos(req, res){
+    try {
+        const pendingTodos = await pool.query(
+          'SELECT * FROM todo WHERE is_completed = true'  
+        );
+
+        res.send(pendingTodos.rows);
+    } catch (error) {
+        res.send(error);
+    }
+}
+
 async function getTodoById(req, res){
     try {
         const {id} = req.params;
@@ -92,6 +116,8 @@ async function deleteTodo(req, res){
 module.exports = {
     createTodo,
     getAllTodos,
+    getPendingTodos,
+    getFinishedTodos,
     getTodoById,
     updateTodoDescription,
     updateTodoStatus,

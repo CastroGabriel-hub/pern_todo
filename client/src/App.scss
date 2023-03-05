@@ -8,5 +8,14 @@
     width: 800px;
     padding: 0;
     list-style: none;
+
+    .list-menu{
+      width: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #696868;
+      cursor: pointer;
+    }
   }
 }
