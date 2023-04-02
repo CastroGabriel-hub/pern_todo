@@ -3,16 +3,25 @@ import {GrClose} from 'react-icons/gr';
 import axios from 'axios';
 import './EditModal.scss';
 
-function EditModal({todo_id, description, isOpen, setIsOpen, reloadListener, setReloadListener}) {
+function EditModal(props) {
+    const {
+        todo_id,
+        description,
+        state,
+        dispatch,
+        openModal,
+        setOpenModal,
+        reloadListener,
+        setReloadListener
+    } = props;
     const [content, setContent] = useState('');
 
     useEffect(() => {
         setContent(description);
-    }, [isOpen, description])
+    }, [openModal, description])
     
-
     function closeModal(){
-        setIsOpen(false);
+        setOpenModal(false);
     }
 
     function handleChange(event){
@@ -24,13 +33,13 @@ function EditModal({todo_id, description, isOpen, setIsOpen, reloadListener, set
             .then((res) => {
                 console.log(res.data)
                 closeModal();
-                setReloadListener(reloadListener + 1);
+                dispatch({type: 'reloadPage', content: state.reloadListener + 1});
             })
             .catch(error => console.log(error));
     }
 
     return (
-        <div className={isOpen ? 'opened' : 'closed'}>
+        <div className={openModal ? 'opened' : 'closed'}>
             <div className="modal">
                 <GrClose id='close' onClick={closeModal}/>
                 <h3>Update the task bellow</h3>

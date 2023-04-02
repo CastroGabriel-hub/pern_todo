@@ -2,26 +2,8 @@ import { useReducer, useEffect } from 'react';
 import axios from 'axios';
 import InputTodo from './components/InputTodo/InputTodo';
 import Todo from './components/Todo/Todo';
+import {reducer, initialValues} from './hooks/state';
 import './App.scss';
-
-function reducer(state, action){
-  switch (action.type){
-    case 'setTodos':
-      return {...state, todos: action.content};
-    case 'setList':
-      return {...state, list: action.content};
-    case 'reloadPage':
-      return {...state, reloadListener: action.content}
-    default:
-      return state;
-  }
-}
-
-const initialValues = {
-  todos: [],
-  list: 'pending',
-  reloadListener: 0
-};
 
 function App() {
   const [state, dispatch] = useReducer(reducer, initialValues);
@@ -43,11 +25,7 @@ function App() {
           <p onClick={() => dispatch({type: 'setList', content: 'finished'})} >Finished Tasks</p>
         </div>
         {state.todos.map((todo) => 
-          <Todo 
-            {...todo}
-            reloadListener={state.reloadListener}
-            setReloadListener={state.setReloadListener}
-          />
+          <Todo {...todo} state={state} dispatch={dispatch} />
         )}
       </ul>
     </div>

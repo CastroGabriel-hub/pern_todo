@@ -5,15 +5,14 @@ import EditModal from '../EditModal/EditModal';
 import './Todo.scss';
 
 function Todo(props) {
-    const { todo_id, description, is_completed, reloadListener, setReloadListener } = props;
+    const { todo_id, description, is_completed, state, dispatch } = props;
     const [openModal, setOpenModal] = useState(false);
-    const modalProps = { ...props, isOpen: openModal, setIsOpen: setOpenModal};
+    const modalProps = { ...props, openModal: openModal, setOpenModal: setOpenModal};
 
     function toggleCompleted(){
         axios.put(`http://localhost:5050/todos/updateStatus/${todo_id}`, {is_completed: !is_completed})
             .then((res) => {
-                console.log(res.data);
-                setReloadListener(reloadListener + 1);
+                dispatch({type: 'reloadPage', content: state.reloadListener + 1});
             })
             .catch(error => console.log(error));
     }
@@ -21,8 +20,7 @@ function Todo(props) {
     function deleteTodo(){
         axios.delete(`http://localhost:5050/todos/${todo_id}`)
             .then((res) => {
-              console.log(res.data)
-              setReloadListener(reloadListener + 1);
+              dispatch({type: 'reloadPage', content: state.reloadListener + 1});
             })
             .catch(error => console.log(error));
     }
