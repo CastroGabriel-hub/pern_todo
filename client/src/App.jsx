@@ -32,10 +32,7 @@ function App() {
         </div>
         {todos.map((todo) => 
           <Todo 
-            key={todo.todo_id}
-            todo_id={todo.todo_id}
-            description={todo.description}
-            is_completed={todo.is_completed}
+            {...todo}
             reloadListener={reloadListener}
             setReloadListener={setReloadListener}
           />
