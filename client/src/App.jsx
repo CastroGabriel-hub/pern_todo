@@ -1,40 +1,52 @@
-import { useState, useEffect } from 'react';
+import { useReducer, useEffect } from 'react';
 import axios from 'axios';
 import InputTodo from './components/InputTodo/InputTodo';
 import Todo from './components/Todo/Todo';
 import './App.scss';
 
+function reducer(state, action){
+  switch (action.type){
+    case 'setTodos':
+      return {...state, todos: action.content};
+    case 'setList':
+      return {...state, list: action.content};
+    case 'reloadPage':
+      return {...state, reloadListener: action.content}
+    default:
+      return state;
+  }
+}
+
+const initialValues = {
+  todos: [],
+  list: 'pending',
+  reloadListener: 0
+};
+
 function App() {
-  const [todos, setTodos] = useState([]);
-  const [list, setList] = useState('pending');
-  const [reloadListener, setReloadListener] = useState(0);
+  const [state, dispatch] = useReducer(reducer, initialValues);
 
   useEffect(() => {
-    axios.get(`http://localhost:5050/todos/${list}`)
+    axios.get(`http://localhost:5050/todos/${state.list}`)
       .then(res => {
-        setTodos(res.data);
+        dispatch({type: 'setTodos', content: res.data});
       })
       .catch(error => console.log(error));
-
-      console.log('useEffect runned');
-  }, [reloadListener, list])
+  }, [state.reloadListener, state.list])
 
   return (
     <div className='app'>
-      <InputTodo 
-        reloadListener={reloadListener} 
-        setReloadListener={setReloadListener}
-      />
+      <InputTodo state={state} dispatch={dispatch} />
       <ul>
         <div className='list-menu'>
-          <p onClick={() => setList('pending')} >Pending Tasks</p>
-          <p onClick={() => setList('finished')} >Finished Tasks</p>
+          <p onClick={() => dispatch({type: 'setList', content: 'pending'})} >Pending Tasks</p>
+          <p onClick={() => dispatch({type: 'setList', content: 'finished'})} >Finished Tasks</p>
         </div>
-        {todos.map((todo) => 
+        {state.todos.map((todo) => 
           <Todo 
             {...todo}
-            reloadListener={reloadListener}
-            setReloadListener={setReloadListener}
+            reloadListener={state.reloadListener}
+            setReloadListener={state.setReloadListener}
           />
         )}
       </ul>

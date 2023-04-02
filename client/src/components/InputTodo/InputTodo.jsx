@@ -3,7 +3,7 @@ import axios from 'axios';
 import './InputTodo.scss';
 
 
-function InputTodo({reloadListener, setReloadListener}) {
+function InputTodo({state, dispatch}) {
     const [description, setDescription] = useState('');
 
     function handleChange(event){
@@ -18,10 +18,9 @@ function InputTodo({reloadListener, setReloadListener}) {
             .then((res) => {
                 console.log(res.data);
                 setDescription('');
-                setReloadListener(reloadListener + 1);
+                dispatch({type: 'reloadPage', content: state.reloadListener + 1});
             })
             .catch(error => console.log(error.message));
-            
     }
 
     return (
