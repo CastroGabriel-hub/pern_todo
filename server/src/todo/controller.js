@@ -14,7 +14,7 @@ async function createTodo(req, res){
     }
 }
 
-async function getAllTodos(req, res){
+async function getTodos(req, res){
     try {
         const { isCompleted } = req.query;
         let query = 'SELECT * FROM todo ';
@@ -99,7 +99,7 @@ async function deleteTodo(req, res){
 
 module.exports = {
     createTodo,
-    getAllTodos,
+    getTodos,
     getTodoById,
     updateTodoDescription,
     updateTodoStatus,

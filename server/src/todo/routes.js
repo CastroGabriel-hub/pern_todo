@@ -3,7 +3,7 @@ const router = Router();
 const controller = require('./controller');
 
 router.post('/', controller.createTodo);
-router.get('/', controller.getAllTodos);
+router.get('/', controller.getTodos);
 router.get('/:id', controller.getTodoById);
 router.put('/:id', controller.updateTodoDescription);
 router.put('/updateStatus/:id', controller.updateTodoStatus)
