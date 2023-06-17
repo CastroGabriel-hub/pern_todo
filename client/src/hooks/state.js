@@ -2,8 +2,8 @@ export function reducer(state, action){
   switch (action.type){
     case 'setTodos':
       return {...state, todos: action.content};
-    case 'setList':
-      return {...state, list: action.content};
+    case 'setIsCompleted':
+      return {...state, isCompleted: action.content};
     case 'reloadPage':
       return {...state, reloadListener: action.content}
     default:
@@ -13,6 +13,6 @@ export function reducer(state, action){
 
 export const initialValues = {
   todos: [],
-  list: 'pending',
+  isCompleted: false,
   reloadListener: 0,
 };

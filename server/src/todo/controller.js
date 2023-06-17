@@ -16,35 +16,19 @@ async function createTodo(req, res){
 
 async function getAllTodos(req, res){
     try {
-        const getAll = await pool.query(
-            'SELECT * FROM todo ORDER BY todo_id DESC',
-        );
+        const { isCompleted } = req.query;
+        let query = 'SELECT * FROM todo ';
 
-        res.send(getAll.rows);
-    } catch (error) {
-        res.send(error);
-    }
-}
+        if(isCompleted === 'true'){
+            query += 'WHERE is_completed = true ORDER BY todo_id DESC';
+        } else if (isCompleted === 'false'){
+            query += 'WHERE is_completed = false ORDER BY todo_id DESC';  
+        } else {
+            query += 'ORDER BY todo_id DESC';
+        }
 
-async function getPendingTodos(req, res){
-    try {
-        const pendingTodos = await pool.query(
-          'SELECT * FROM todo WHERE is_completed = false ORDER BY todo_id DESC'  
-        );
-
-        res.send(pendingTodos.rows);
-    } catch (error) {
-        res.send(error);
-    }
-}
-
-async function getFinishedTodos(req, res){
-    try {
-        const pendingTodos = await pool.query(
-          'SELECT * FROM todo WHERE is_completed = true ORDER BY todo_id DESC'  
-        );
-
-        res.send(pendingTodos.rows);
+        todos = await pool.query(query);
+        res.send(todos.rows);
     } catch (error) {
         res.send(error);
     }
@@ -116,8 +100,6 @@ async function deleteTodo(req, res){
 module.exports = {
     createTodo,
     getAllTodos,
-    getPendingTodos,
-    getFinishedTodos,
     getTodoById,
     updateTodoDescription,
     updateTodoStatus,
